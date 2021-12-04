@@ -8,6 +8,7 @@ public class Bingo {
     int[][] board;
     int sumOfBoard;
     int marked = 0;
+    boolean hasWon = false;
 
     public Bingo(int size, String board) {
         this.size = size;
@@ -45,7 +46,9 @@ public class Bingo {
 
         if (marked >= 5) {
             System.out.println(calculateSum());
-            return checkForWin();
+            if (checkForWin()) {
+                return true;
+            }
         }
 
         return false;

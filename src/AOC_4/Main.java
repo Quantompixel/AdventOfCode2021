@@ -33,18 +33,29 @@ public class Main {
             boards.add(new Bingo(size, lines[i]));
         }
 
+        int boardsThatWon = 0;
+        int numOfBoards = lines.length - 1;
+
         System.out.println(lines[0]);
         String[] randomNumbers = lines[0].split(",");
         for (String randomNumber : randomNumbers) {
             for (Bingo board : boards) {
                 if (board.input(Integer.parseInt(randomNumber))) {
-                    System.out.println(randomNumber);
-                    return;
+                    if (!board.hasWon) {
+                        boardsThatWon++;
+                        board.hasWon = true;
+
+                        if (boardsThatWon == numOfBoards) {
+                            System.out.println("\n\n" + randomNumber);
+                            System.out.println(board.calculateSum());
+                            return;
+                        }
+                    }
                 }
-                System.out.println();
+                System.out.println(board.hasWon);
             }
 
-            System.out.println("-----------------------------------------");
+            System.out.println("-------------------- " + boardsThatWon + " ---------------------");
         }
     }
 }
