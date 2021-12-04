@@ -34,9 +34,8 @@ public class Bingo {
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board.length; j++) {
                 int current = board[i][j];
-                if (current == input && current > 0) {
-                     sumOfBoard -= current;
-                    current *= -1;
+                if (current == input && current < 100) {
+                    current += 100;
                     board[i][j] = current;
                     marked++;
                 }
@@ -45,7 +44,7 @@ public class Bingo {
         }
 
         if (marked >= 5) {
-            System.out.println(sumOfBoard);
+            System.out.println(calculateSum());
             return checkForWin();
         }
 
@@ -57,13 +56,26 @@ public class Bingo {
             int rowMarks = 0;
             int columnMarks = 0;
             for (int j = 0; j < board[i].length; j++) {
-                if (board[i][j] < 0) rowMarks++;
-                if (board[j][i] < 0) columnMarks++;
+                if (board[i][j] >= 100) rowMarks++;
+                if (board[j][i] >= 100) columnMarks++;
             }
-            if (rowMarks >= 5) {
+            if (rowMarks >= 5 || columnMarks >= 5) {
                 return true;
             }
         }
         return false;
+    }
+
+    int calculateSum() {
+        int sum = 0;
+        for (int[] ints : board) {
+            for (int num : ints) {
+                if (num < 100) {
+                    sum += num;
+                }
+            }
+        }
+
+        return sum;
     }
 }

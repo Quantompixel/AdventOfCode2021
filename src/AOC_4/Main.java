@@ -38,7 +38,7 @@ public class Main {
         for (String randomNumber : randomNumbers) {
             for (Bingo board : boards) {
                 if (board.input(Integer.parseInt(randomNumber))) {
-                    System.out.println(Arrays.toString(board.board[0]));
+                    System.out.println(randomNumber);
                     return;
                 }
                 System.out.println();
