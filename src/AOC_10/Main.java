@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class Main {
@@ -15,9 +16,11 @@ public class Main {
         List<String> input = readInput(path);
         List<Character> failures = new ArrayList<>();
         int output = 0;
+        List<Long> totalScores = new ArrayList<>();
 
         for (String s : input) {
             List<Character> opened = new ArrayList<>();
+            boolean hasFailed = false;
             for (int i = 0; i < s.length(); i++) {
                 char current = s.charAt(i);
                 // System.out.println(opened);
@@ -64,14 +67,57 @@ public class Main {
                             }
                             continue;
                     }
-                    // System.out.println(current);
+                    //nicht incomplete
+                    hasFailed = true;
                     break;
                 }
             }
+            if (!hasFailed) {
+                //System.out.println(reverseList(opened));
+                totalScores.add(calculateScore(reverseList(opened)));
+                System.out.println(opened);
+                System.out.println(calculateScore(reverseList(opened)));
+            }
         }
-        
+        totalScores.sort(new Comparator<Long>() {
+            @Override
+            public int compare(Long o1, Long o2) {
+                return Long.compare(o1,o2);
+            }
+        });
+        System.out.println(totalScores);
+        System.out.println(totalScores.get(totalScores.size()/2));
+    }
 
-        System.out.println(output);
+    static long calculateScore(List<Character> list) {
+        long totalScore = 0;
+        for (Character character : list) {
+            totalScore *= 5;
+            switch (character) {
+                case '(':
+                    totalScore += 1;
+                    break;
+                case '[':
+                    totalScore += 2;
+                    break;
+                case '{':
+                    totalScore += 3;
+                    break;
+                case '<':
+                    totalScore += 4;
+                    break;
+            }
+        }
+
+        return totalScore;
+    }
+
+    static List<Character> reverseList(List<Character> list) {
+        List<Character> output = new ArrayList<>();
+        for (int i = list.size() - 1; i >= 0; i--) {
+            output.add(list.get(i));
+        }
+        return output;
     }
 
     static List<String> readInput(String path) {
