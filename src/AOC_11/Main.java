@@ -10,7 +10,7 @@ public class Main {
     public static void main(String[] args) {
         // simulateOctopus("res/input/AOC_11.txt");
         printOctopus(readInput("res/input/AOC_11.txt"));
-        simulateOctopus(readInput("res/input/AOC_11.txt"), 195);
+        simulateOctopus(readInput("res/input/AOC_11.txt"), 500);
         // performFlash(readInput("res/input/AOC_11.txt"));
     }
 
@@ -41,8 +41,24 @@ public class Main {
         System.out.println();
         System.out.println(flashes);
         printOctopus(input);
+        if (checkForSimultaneousFlash(input)) {
+            System.out.println("FLASH");
+            System.out.println(steps);
+            return;
+        }
 
         simulateOctopus(input, steps-1);
+    }
+
+    static boolean checkForSimultaneousFlash(List<List<Integer>> input) {
+        int sum = 0;
+        for (List<Integer> integers : input) {
+            for (Integer integer : integers) {
+                sum += integer;
+            }
+        }
+
+        return sum == 0;
     }
 
     static List<List<Integer>> performFlash(List<List<Integer>> input) {
