@@ -8,22 +8,31 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        scanCaves(readInput("res/input/AOC_12.txt"), "start", new ArrayList<>(), new ArrayList<>());
+        scanCaves(readInput("res/input/AOC_12.txt"), "start", new ArrayList<>(),"" ,new ArrayList<>());
         System.out.println(counter);
+        System.out.println(onceVisited);
     }
 
     static int counter = 0;
+    static List<String> onceVisited = new ArrayList<>();
 
-    static void scanCaves(List<String> input, String pos, List<String> visited, List<String> path) {
-        // System.out.println(pos);
-        if (pos.charAt(0) >= 'a' && pos.charAt(0) <= 'z') {
-            visited.add(pos);
-        }
+    static void scanCaves(List<String> input, String pos, List<String> visited, String visitedOnce, List<String> path) {
         if (pos.equals("end")) {
             // System.out.println();
             System.out.println(path + ", end");
             counter++;
             return;
+        }
+
+        if (pos.charAt(0) >= 'a' && pos.charAt(0) <= 'z') {
+            if (pos.equals("start")) {
+                visited.add(pos);
+            } else if (visitedOnce.isBlank()) {
+                onceVisited.add(pos);
+                visitedOnce = pos;
+            } else {
+                visited.add(pos);
+            }
         }
 
         for (String s : input) {
@@ -34,11 +43,11 @@ public class Main {
             pfad.add(pos);
             if (start.equals(pos)) {
                 if (visited.contains(end)) continue;
-                scanCaves(input, end, new ArrayList<>(visited),pfad);
+                scanCaves(input, end, new ArrayList<>(visited), visitedOnce,pfad);
             }
             if (end.equals(pos)) {
                 if (visited.contains(start)) continue;
-                scanCaves(input, start, new ArrayList<>(visited),pfad);
+                scanCaves(input, start, new ArrayList<>(visited), visitedOnce,pfad);
             }
         }
     }
