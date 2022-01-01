@@ -1,4 +1,4 @@
-package AOC_9.txt;
+package AOC_9;
 
 import java.awt.*;
 import java.io.IOException;
