@@ -12,7 +12,7 @@ public class Main {
     public static void main(String[] args) {
         init("res/input/AOC_15.txt");
         djikstra();
-        djikstra();
+        // djikstra();
     }
 
     // invert the position to show that is was already visited: +3 -> -3
@@ -69,35 +69,47 @@ public class Main {
         //Nachbarn
         int height = map.length;
         int width = map[0].length;
-        int row = current/height;
-        int column = current%width;
+        int row = current / height;
+        int column = current % width;
 
-        for (int y = column-1; y <= column+1; y++) {
+        int[][] neighbors = new int[][]{
+                //[column, row]
+                new int[]{0, -1},
+                new int[]{+1, 0},
+                new int[]{0, +1},
+                new int[]{-1, 0},
+        };
+
+        for (int i = 0; i < neighbors.length; i++) {
+            int x = column + neighbors[i][0];
+            int y = row + neighbors[i][1];
+
+            if (x < 0 || x >= width) continue;
             if (y < 0 || y >= height) continue;
-            for (int x = row-1; x <= row+1; x++) {
-                if (x < 0 || x >= width) continue;
-                if (y == row && x == column) continue;
-                System.out.println(convertPosToVertexID(y, x));
 
-                int neighbor = convertPosToVertexID(y, x);
-                if (unvisited.contains(neighbor)) {
-                    // ubesuchter Nachbar
-                    int[] neighborEntry = vertexes[neighbor];
-                    int neigbourDistance = map[y][x];
+            int neighbor = convertPosToVertexID(y, x);
+            if (unvisited.contains(neighbor)) {
+                // ubesuchter Nachbar
+                int[] neighborEntry = vertexes[neighbor];
+                int neigbourDistance = map[y][x];
 
-                    int distanceToNeighbour = distance + Math.abs(current-neigbourDistance);
+                int distanceToNeighbour = Math.abs(current - neigbourDistance);
 
-                    if (distanceToNeighbour < neighborEntry[0]) {
-                        vertexes[neighbor][0] = distanceToNeighbour;
-                        vertexes[neighbor][1] = current;
-                    }
-                }
+                // if (distanceToNeighbour < neighborEntry[0]) {
+                    // vertexes[neighbor][0] = distanceToNeighbour;
+                    // vertexes[neighbor][1] = current;
+                // }
             }
         }
 
+        // System.out.println();
+        // for (int[] vertex : vertexes) {
+        // System.out.println(Arrays.toString(vertex));
+        // }
+
         System.out.println();
-        for (int[] vertex : vertexes) {
-            System.out.println(Arrays.toString(vertex));
+        for (int i = 0; i < vertexes.length; i++) {
+            // System.out.println(i + "  : " + Arrays.toString(vertexes[i]));
         }
 
         //aktuelle Vertex aus unbesuchten entfernen
@@ -111,9 +123,9 @@ public class Main {
 
     static int convertPosToVertexID(int row, int column) {
         int height = map.length;
-         int width = map[0].length;
+        int width = map[0].length;
 
-        return row*height+column;
+        return row * height + column;
     }
 
     static void init(String path) {
@@ -148,7 +160,7 @@ public class Main {
             //System.out.println(Arrays.toString(ints));
         }
         for (int[] ints : vertexes) {
-             System.out.println(Arrays.toString(ints));
+            System.out.println(Arrays.toString(ints));
         }
         System.out.println(unvisited);
 
