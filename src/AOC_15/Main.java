@@ -11,8 +11,12 @@ import java.util.List;
 public class Main {
     public static void main(String[] args) {
         init("res/input/AOC_15.txt");
-        djikstra();
-        // djikstra();
+
+        for (int i = 0; i < vertexes.length; i++) {
+            djikstra();
+        }
+        //System.out.println(distanceToStartVertex(0));
+        System.out.println("\u221E");
     }
 
     // invert the position to show that is was already visited: +3 -> -3
@@ -64,7 +68,13 @@ public class Main {
             }
         }
         int current = closest;
-        int distance = vertexes[current][1];
+
+        Object o = current;
+        //aktuelle Vertex aus unbesuchten entfernen
+        unvisited.remove(o);
+
+        int distance = vertexes[current][0];
+
         System.out.println("\n closest Node: " + closest + "\n");
         //Nachbarn
         int height = map.length;
@@ -91,34 +101,33 @@ public class Main {
             if (unvisited.contains(neighbor)) {
                 // ubesuchter Nachbar
                 int[] neighborEntry = vertexes[neighbor];
-                int neigbourDistance = map[y][x];
+                int neighborValue = map[y][x];
 
-                int distanceToNeighbour = Math.abs(current - neigbourDistance);
-
-                // if (distanceToNeighbour < neighborEntry[0]) {
-                    // vertexes[neighbor][0] = distanceToNeighbour;
-                    // vertexes[neighbor][1] = current;
-                // }
+                if (neighborValue + distance < neighborEntry[0]) {
+                    vertexes[neighbor][0] = neighborValue + distance;
+                    vertexes[neighbor][1] = current;
+                }
             }
         }
 
-        // System.out.println();
-        // for (int[] vertex : vertexes) {
-        // System.out.println(Arrays.toString(vertex));
-        // }
-
-        System.out.println();
+        System.out.println("ID    Dist  Prev");
         for (int i = 0; i < vertexes.length; i++) {
-            // System.out.println(i + "  : " + Arrays.toString(vertexes[i]));
+            String infinity = "\u221E";
+            String output = '[' + String.format("% 3d", vertexes[i][0]) + ']' + " " + '[' + String.format("% 3d", vertexes[i][1]) + ']';
+            output = output.replace(" 2147483647", "  " + infinity);
+            System.out.println(String.format("%02d", i) + "  : " + output);
         }
 
-        //aktuelle Vertex aus unbesuchten entfernen
-        unvisited.remove(current);
+
+        System.out.println(unvisited);
     }
 
-    static int distanceToStartVertex(int vertex) {
-        int i = 0;
-        return i;
+    static int getValueOfVertex(int vertex) {
+        int height = map.length;
+        int width = map[0].length;
+        int y = vertex / height;
+        int x = vertex % width;
+        return map[y][x];
     }
 
     static int convertPosToVertexID(int row, int column) {
