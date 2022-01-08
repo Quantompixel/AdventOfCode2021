@@ -15,8 +15,16 @@ public class Main {
         for (int i = 0; i < vertexes.length; i++) {
             djikstra();
         }
-        //System.out.println(distanceToStartVertex(0));
-        System.out.println("\u221E");
+
+        System.out.println();
+
+        System.out.println("ID    Dist  Prev");
+        for (int i = 0; i < vertexes.length; i++) {
+            String infinity = "\u221E";
+            String output = '[' + String.format("% 3d", vertexes[i][0]) + ']' + " " + '[' + String.format("% 3d", vertexes[i][1]) + ']';
+            output = output.replace(" 2147483647", "  " + infinity);
+            System.out.println(String.format("%02d", i) + "  : " + output);
+        }
     }
 
     // invert the position to show that is was already visited: +3 -> -3
@@ -75,7 +83,8 @@ public class Main {
 
         int distance = vertexes[current][0];
 
-        System.out.println("\n closest Node: " + closest + "\n");
+        //System.out.println("\n closest Node: " + closest + "\n");
+
         //Nachbarn
         int height = map.length;
         int width = map[0].length;
@@ -110,6 +119,7 @@ public class Main {
             }
         }
 
+        /*
         System.out.println("ID    Dist  Prev");
         for (int i = 0; i < vertexes.length; i++) {
             String infinity = "\u221E";
@@ -120,6 +130,7 @@ public class Main {
 
 
         System.out.println(unvisited);
+         */
     }
 
     static int getValueOfVertex(int vertex) {
