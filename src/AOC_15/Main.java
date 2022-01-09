@@ -11,18 +11,14 @@ public class Main {
     public static void main(String[] args) {
         init("res/input/AOC_15.txt");
 
-        for (int i = 0; i < vertexes.length; i++) {
+        for (int i = 0; i < vertexes.length * vertexes[0].length; i++) {
             djikstra();
         }
 
         System.out.println();
 
-        System.out.println("ID    Dist  Prev");
-        for (int i = 0; i < vertexes.length; i++) {
-            String infinity = "\u221E";
-            String output = '[' + String.format("% 3d", vertexes[i][0]) + ']' + " " + '[' + String.format("% 3d", vertexes[i][1]) + ']';
-            output = output.replace(" 2147483647", "  " + infinity);
-            System.out.println(String.format("%02d", i) + "  : " + output);
+        for (int[] vertex : vertexes) {
+            System.out.println(Arrays.toString(vertex));
         }
     }
 
@@ -63,26 +59,32 @@ public class Main {
      */
     static void djikstra() {
         int min = Integer.MAX_VALUE;
-        int closest = 0;
+        int row = 0;
+        int column = 0;
+
         for (int i = 0; i < vertexes.length; i++) {
-            if (vertexes[i][0] < min && unvisited.contains(i)) {
-                min = vertexes[i][0];
-                closest = i;
+            for (int j = 0; j < vertexes[i].length; j++) {
+                int temp = vertexes[i][j];
+                if (temp >= 0 && temp < min) {
+                    min = vertexes[i][j];
+                    row = i;
+                    column = j;
+                }
             }
         }
-        int current = closest;
 
-        Object o = current;
-        //aktuelle Vertex aus unbesuchten entfernen
-        unvisited.remove(o);
+        // System.out.println("\n chosen node: " + vertexes[row][column]);
+        // System.out.println("neigbors:");
 
-        int distance = vertexes[current][0];
+        int distance = vertexes[row][column];
+
+        // Als Besucht markieren: +5 -> -5
+        if (vertexes[row][column] == 0) vertexes[row][column] = -1;
+        else vertexes[row][column] = vertexes[row][column] * -1;
 
         //Nachbarn
         int height = map.length;
         int width = map[0].length;
-        int row = current / height;
-        int column = current % width;
 
         int[][] neighbors = new int[][]{
                 //[column, row]
@@ -99,18 +101,21 @@ public class Main {
             if (x < 0 || x >= width) continue;
             if (y < 0 || y >= height) continue;
 
-            int neighbor = convertPosToVertexID(y, x);
-            if (unvisited.contains(neighbor)) {
+            int neighbor = vertexes[y][x];
+            if (neighbor > 0) {
                 // ubesuchter Nachbar
-                int[] neighborEntry = vertexes[neighbor];
                 int neighborValue = map[y][x];
+                // System.out.println(neighborValue);
 
-                if (neighborValue + distance < neighborEntry[0]) {
-                    vertexes[neighbor][0] = neighborValue + distance;
-                    vertexes[neighbor][1] = current;
+                if (neighborValue + distance < vertexes[y][x]) {
+                    vertexes[y][x] = neighborValue + distance;
                 }
             }
         }
+
+        // for (int[] vertex : vertexes) {
+            // System.out.println(Arrays.toString(vertex));
+        // }
 
     }
 
@@ -130,29 +135,25 @@ public class Main {
         }
 
         map = new int[lines.size()][lines.get(0).length()];
-        vertexes = new int[lines.size() * lines.get(0).length()][2];
+        vertexes = new int[lines.size()][lines.get(0).length()];
 
-        int counter = 0;
         for (int row = 0; row < lines.size(); row++) {
             for (int column = 0; column < lines.get(row).length(); column++) {
                 map[row][column] = Integer.parseInt(Character.toString(lines.get(row).charAt(column)));
-                vertexes[counter][0] = Integer.MAX_VALUE;
-                vertexes[counter][1] = -1;
-                counter++;
+                vertexes[row][column] = Integer.MAX_VALUE;
             }
         }
 
-        for (int i = 0; i < counter; i++) {
-            unvisited.add(i);
-        }
-
         vertexes[0][0] = 0;
-        vertexes[0][1] = 0;
 
         for (int[] ints : vertexes) {
             System.out.println(Arrays.toString(ints));
         }
-        System.out.println(unvisited);
+
+        System.out.println();
+        for (int[] ints : map) {
+            System.out.println(Arrays.toString(ints));
+        }
 
     }
 }
