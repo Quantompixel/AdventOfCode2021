@@ -1,6 +1,5 @@
 package AOC_15;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -27,36 +26,32 @@ public class Main {
         }
     }
 
-    // invert the position to show that is was already visited: +3 -> -3
     static int[][] map;
     static int[][] vertexes;
     static List<Integer> unvisited = new ArrayList<>();
-    static List<Integer> visited = new ArrayList<>();
 
     /**
-     * <pre>visited[], unvisited[]</pre>
-     *
      * <pre>
+     * visited[], unvisited[]
+     *
      *    Vertex | Shortest distance from root | Previous Vertex
      *    0                 0                           0
      *    1                 infinit                    -1
      *    2                 ....
      *    3
      *    ...
-     * </pre>
      *
-     * <pre>1.    Die Vertext besuchen, die die kleinste Distanz zum start hat -> also 0 selbst</pre>
-     * <pre>2.    Alle unbesuchten Nachbarn anschauen</pre>
-     * <pre>3.    Distanz zur startveterx kalkulieren</pre>
-     * <pre>4.    Wenn die Distanz zu den nachbarn kleiner ist als die gespeicherte Distanz wird die Tabelle geupdated</pre>
-     * <pre>5.    Und die Vertex wird eingetragen über die die Nachbarn erreicht wurden</pre>
-     * <pre>6.    Die aktuelle Vertex wird als besucht abgspeichert</pre>
+     * 1.    Die Vertext besuchen, die die kleinste Distanz zum start hat -> also 0 selbst
+     * 2.    Alle unbesuchten Nachbarn anschauen
+     * 3.    Distanz zur startveterx kalkulieren
+     * 4.    Wenn die Distanz zu den nachbarn kleiner ist als die gespeicherte Distanz wird die Tabelle geupdated
+     * 5.    Und die Vertex wird eingetragen über die die Nachbarn erreicht wurden
+     * 6.    Die aktuelle Vertex wird als besucht abgspeichert
      *
-     * <pre>Dann springen wir zur Vertex mit der kleinsten Distanz zum start</pre>
-     * <pre>Alle unbesuchten nachbarn</pre>
+     * Dann springen wir zur Vertex mit der kleinsten Distanz zum start
+     * Alle unbesuchten nachbarn
      * ....
      *
-     * <pre>
      * int[][]
      * Vertex 0: [kuerzester weg zu root],[Vorgaenger]
      *
@@ -82,8 +77,6 @@ public class Main {
         unvisited.remove(o);
 
         int distance = vertexes[current][0];
-
-        //System.out.println("\n closest Node: " + closest + "\n");
 
         //Nachbarn
         int height = map.length;
@@ -119,26 +112,6 @@ public class Main {
             }
         }
 
-        /*
-        System.out.println("ID    Dist  Prev");
-        for (int i = 0; i < vertexes.length; i++) {
-            String infinity = "\u221E";
-            String output = '[' + String.format("% 3d", vertexes[i][0]) + ']' + " " + '[' + String.format("% 3d", vertexes[i][1]) + ']';
-            output = output.replace(" 2147483647", "  " + infinity);
-            System.out.println(String.format("%02d", i) + "  : " + output);
-        }
-
-
-        System.out.println(unvisited);
-         */
-    }
-
-    static int getValueOfVertex(int vertex) {
-        int height = map.length;
-        int width = map[0].length;
-        int y = vertex / height;
-        int x = vertex % width;
-        return map[y][x];
     }
 
     static int convertPosToVertexID(int row, int column) {
@@ -176,14 +149,10 @@ public class Main {
         vertexes[0][0] = 0;
         vertexes[0][1] = 0;
 
-        for (int[] ints : map) {
-            //System.out.println(Arrays.toString(ints));
-        }
         for (int[] ints : vertexes) {
             System.out.println(Arrays.toString(ints));
         }
         System.out.println(unvisited);
 
-        // System.out.println(unvisited);
     }
 }
