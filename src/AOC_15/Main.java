@@ -11,7 +11,6 @@ public class Main {
     public static void main(String[] args) {
         init2("res/input/AOC_15.txt");
 
-        /*
         for (int i = 0; i < vertexes.length * vertexes[0].length; i++) {
             djikstra();
         }
@@ -21,7 +20,6 @@ public class Main {
         for (int[] vertex : vertexes) {
             System.out.println(Arrays.toString(vertex));
         }
-        */
     }
 
     static int[][] map;
@@ -150,7 +148,14 @@ public class Main {
                 if (value > 9) map[y][x] = value % 9;
                 else map[y][x] = value;
 
+                vertexes[y][x] = Integer.MAX_VALUE;
             }
+        }
+
+        vertexes[0][0] = 0;
+
+        for (int[] ints : vertexes) {
+            System.out.println(Arrays.toString(ints));
         }
 
         System.out.println();
