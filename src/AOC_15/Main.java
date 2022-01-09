@@ -9,8 +9,9 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        init("res/input/AOC_15.txt");
+        init2("res/input/AOC_15.txt");
 
+        /*
         for (int i = 0; i < vertexes.length * vertexes[0].length; i++) {
             djikstra();
         }
@@ -20,6 +21,7 @@ public class Main {
         for (int[] vertex : vertexes) {
             System.out.println(Arrays.toString(vertex));
         }
+        */
     }
 
     static int[][] map;
@@ -114,7 +116,7 @@ public class Main {
         }
 
         // for (int[] vertex : vertexes) {
-            // System.out.println(Arrays.toString(vertex));
+        // System.out.println(Arrays.toString(vertex));
         // }
 
     }
@@ -124,6 +126,37 @@ public class Main {
         int width = map[0].length;
 
         return row * height + column;
+    }
+
+    static void init2(String path) {
+        List<String> lines = new ArrayList<>();
+        try {
+            lines = Files.readAllLines(Paths.get(path));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        int width = lines.get(0).length();
+        int height = lines.size();
+
+        map = new int[lines.size() * 5][lines.get(0).length() * 5];
+        vertexes = new int[lines.size() * 5][lines.get(0).length() * 5];
+
+        for (int y = 0; y < map.length; y++) {
+            int yOffset = y / height;
+            for (int x = 0; x < map[y].length; x++) {
+                int xOffset = x / width;
+                int value = Integer.parseInt(Character.toString(lines.get(y % height).charAt(x % width))) + yOffset + xOffset;
+                if (value > 9) map[y][x] = value % 9;
+                else map[y][x] = value;
+
+            }
+        }
+
+        System.out.println();
+        for (int[] ints : map) {
+            System.out.println(Arrays.toString(ints));
+        }
     }
 
     static void init(String path) {
